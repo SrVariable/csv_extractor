@@ -17,13 +17,13 @@ def extract_field_values(file, field_name):
         fields = line.split(",")
         if not found:
             for field in fields:
-                if field.lower() == field_name:
+                if field.lower().strip() == field_name:
                     found = True
                     break
                 column_number += 1
         else:
             if fields[column_number] != "":
-                field_values.append(fields[column_number])
+                field_values.append(fields[column_number].strip())
         line = file.readline()
     file.seek(0, 0)
 
@@ -47,7 +47,7 @@ def get_fields(csv_filename, names):
             values = extract_field_values(file, name)
             fields[name] = values
     assert_length(fields)
-    
+
     return fields
 
 
@@ -74,7 +74,8 @@ if __name__ == "__main__":
         sys.exit(1)
 
     csv_filename = get_valid_csv_filename(sys.argv[1])
-    field_names = ["persona", "razón", "pagado", "desde", "hasta"]
+    #field_names = ["persona", "razón", "pagado", "desde", "hasta"]
+    field_names = ["plataforma", "total", "miembros"]
     fields = get_fields(csv_filename, field_names)
     rows = get_rows(fields)
 
